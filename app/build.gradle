@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.pmuprojekat'
+    namespace 'com.markonrt8519.pmuprojekat'
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.example.pmuprojekat"
+        applicationId "com.markonrt8519.pmuprojekat"
         minSdk 28
         targetSdk 32
         versionCode 1
@@ -38,8 +38,16 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.6.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
-    implementation("com.squareup.okhttp3:okhttp:4.9.3")
 
+    //Project deps
+    implementation("com.squareup.okhttp3:okhttp:4.9.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1-native-mt")
+    implementation("com.beust:klaxon:5.6")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.4.1")
+    implementation("androidx.activity:activity-ktx:1.4.0")
+
+    //Test libs
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
