@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">PMUProjekat</string>
+    <string name="category_view">Kategorije</string>
+    <string name="add_character">+</string>
+    <string name="project_title">Northwind API Android Application</string>
+    <string name="categories">Kategorije</string>
 </resources>
