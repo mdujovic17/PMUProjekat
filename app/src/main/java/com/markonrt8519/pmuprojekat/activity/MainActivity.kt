@@ -17,4 +17,9 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+
+    fun openActivityProducts(view: View) {
+        val intent = Intent(this, ProductsActivity::class.java)
+        startActivity(intent)
+    }
 }
