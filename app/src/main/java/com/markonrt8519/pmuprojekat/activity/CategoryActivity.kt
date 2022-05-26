@@ -66,7 +66,7 @@ class CategoryActivity : AppCompatActivity() {
         setContentView(R.layout.category_item)
         val categoryButton = findViewById<Button>(R.id.categoryAction)
         categoryButton.text = "Dodaj"
-        val categoryName = findViewById<EditText>(R.id.categoryName)
+        val categoryName = findViewById<EditText>(R.id.orderId)
         val categoryDescription = findViewById<EditText>(R.id.categoryDescription)
         categoryButton.setOnClickListener {
             val newCategory = Category(0, categoryName.text.toString(), categoryDescription.text.toString())

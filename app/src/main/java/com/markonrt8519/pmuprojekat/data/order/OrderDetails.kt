@@ -7,7 +7,5 @@ data class OrderDetails (
     val productId: Int,
     val unitPrice: Double,
     val quantity: Int,
-    val discount: Float,
-    val order: Order,
-    val product: Product) {
+    val discount: Float) {
 }

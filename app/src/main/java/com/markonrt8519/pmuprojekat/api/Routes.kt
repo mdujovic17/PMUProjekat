@@ -1,7 +1,9 @@
 package com.markonrt8519.pmuprojekat.api
 
 object Routes {
-    val CATEGORIES = "Categories/"
-    val PRODUCTS = "Products/"
-    val SUPPLIERS = "Suppliers/"
+    const val CATEGORIES = "Categories/"
+    const val PRODUCTS = "Products/"
+    const val SUPPLIERS = "Suppliers/"
+    const val ORDERS = "Orders/"
+    const val ORDER_DETAILS = "OrderDetails/"
 }

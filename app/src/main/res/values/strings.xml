@@ -19,4 +19,7 @@
     <string name="product_discontinued">Obustavljen proizvod / Na akciji</string>
     <string name="yes">Da</string>
     <string name="no">Ne</string>
+    <string name="orders">Orders</string>
+    <string name="groupedByOrder">Proizvodi grupisani po porudzbini</string>
+    <string name="groupedBySupplier">Proizvodi grupisani po dobavljacu</string>
 </resources>

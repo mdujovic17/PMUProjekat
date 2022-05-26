@@ -1,6 +1,5 @@
 package com.markonrt8519.pmuprojekat.activity
 
-import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -90,7 +89,7 @@ class CategoryDetailsActivity : AppCompatActivity() {
                     category = Klaxon().parse(result)
 
                     withContext(Dispatchers.Main) {
-                        val categoryName = findViewById<EditText>(R.id.categoryName)
+                        val categoryName = findViewById<EditText>(R.id.orderId)
                         categoryName.setText(category!!.categoryName)
                         val categoryDescription = findViewById<EditText>(R.id.categoryDescription)
                         categoryDescription.setText(category!!.description)

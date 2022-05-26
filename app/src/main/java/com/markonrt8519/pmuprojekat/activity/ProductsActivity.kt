@@ -48,7 +48,7 @@ class ProductsActivity : AppCompatActivity() {
 
                     withContext(Dispatchers.Main) {
                         viewModel.listProducts.value = products
-                        val listProductsView = findViewById<RecyclerView>(R.id.listProductsView)
+                        val listProductsView = findViewById<RecyclerView>(R.id.listOrderView)
                         listProductsView.layoutManager = LinearLayoutManager(ctx)
                         productsViewAdapter = ProductsViewAdapter(ctx, viewModel.listProducts)
                         listProductsView.adapter = productsViewAdapter
