@@ -1,10 +1,12 @@
 package com.markonrt8519.pmuprojekat.activity
 
+import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.beust.klaxon.Klaxon
@@ -25,25 +27,35 @@ class CategoryDetailsActivity : AppCompatActivity() {
     }
 
     private fun deleteCategory(categoryId: Int) {
-        lifecycleScope.launch(Dispatchers.IO) {
-            try {
-                val apiHandler = NorthwindAPIHandler()
-                val result = apiHandler.deleteRequest(Routes.CATEGORIES + categoryId)
-                if (result != null) {
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(applicationContext, "Uspesno obrisana kategorija", Toast.LENGTH_LONG).show()
+        val dialog = AlertDialog.Builder(this)
+        dialog.setTitle("Obrisi kategoriju")
+        dialog.setMessage("Da li ste sigurni da zelite da obrisete ovu kategoriju? Ova radnja se ne moze opozvati!")
+
+        dialog.setNegativeButton(R.string.no) {dialog, which ->
+            Toast.makeText(applicationContext, "Brisanje otkazano", Toast.LENGTH_LONG).show()
+        }
+
+        dialog.setPositiveButton(R.string.yes) { dialog, which ->
+            lifecycleScope.launch(Dispatchers.IO) {
+                try {
+                    val apiHandler = NorthwindAPIHandler()
+                    val result = apiHandler.deleteRequest(Routes.CATEGORIES + categoryId)
+                    if (result != null) {
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(applicationContext, "Uspesno obrisana kategorija", Toast.LENGTH_LONG).show()
+                        }
+                    }
+                    else {
+                        print("Error: Delete request returned no response")
                     }
                 }
-                else {
-                    print("Error: Delete request returned no response")
+                catch (err: Error) {
+                    print("Error when parsing JSON: " + err.localizedMessage)
                 }
             }
-            catch (err: Error) {
-                print("Error when parsing JSON: " + err.localizedMessage)
-            }
-
-
         }
+
+        dialog.show()
     }
 
     private fun saveCategory(categoryId: Int, categoryName: String, categoryDescription: String) {

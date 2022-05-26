@@ -9,4 +9,6 @@
     <string name="details">Detaljnije</string>
     <string name="category_name">Naziv kategorije</string>
     <string name="category_description">Opis kategorije</string>
+    <string name="yes">Da</string>
+    <string name="no">Ne</string>
 </resources>
