@@ -5,10 +5,18 @@
     <string name="project_title">Northwind API Android Application</string>
     <string name="categories">Kategorije</string>
     <string name="products_view">Proizvodi</string>
+    <string name="suppliers">Dobavljaci</string>
     <string name="products">Proizvodi</string>
     <string name="details">Detaljnije</string>
     <string name="category_name">Naziv kategorije</string>
     <string name="category_description">Opis kategorije</string>
+    <string name="product_name">Naziv proizvoda</string>
+    <string name="product_price_per_unit">Cena jedinice</string>
+    <string name="product_quantity_per_unit">Kolicina po jedinici</string>
+    <string name="product_units_in_stock">Jedinica u skladistu</string>
+    <string name="product_units_on_order">Jedinica po porudzbini</string>
+    <string name="product_reorder_level">Min. kolicina za ponovnu porudzbinu</string>
+    <string name="product_discontinued">Obustavljen proizvod / Na akciji</string>
     <string name="yes">Da</string>
     <string name="no">Ne</string>
 </resources>

@@ -2,14 +2,17 @@ package com.markonrt8519.pmuprojekat.view.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.markonrt8519.pmuprojekat.R
+import com.markonrt8519.pmuprojekat.activity.ProductDetailsActivity
 import com.markonrt8519.pmuprojekat.data.product.Product
 
 class ProductsViewAdapter(val ctx: Context, val data: LiveData<List<Product>>): RecyclerView.Adapter<ProductsViewAdapter.ProductsViewHolder>() {
@@ -34,7 +37,10 @@ class ProductsViewAdapter(val ctx: Context, val data: LiveData<List<Product>>): 
         @SuppressLint("SetTextI18n")
         fun bindItems(model: Product) {
             val productId = model.productId
+
             val name = itemView.findViewById<TextView>(R.id.productName)
+            val details = itemView.findViewById<Button>(R.id.productDetails)
+
             if (model.discontinued) {
                 name.setTextColor(Color.RED)
                 name.text = "DISCONTINUED: ${model.productName}"
@@ -42,6 +48,12 @@ class ProductsViewAdapter(val ctx: Context, val data: LiveData<List<Product>>): 
             else {
                 name.setTextColor(Color.BLACK)
                 name.text = model.productName
+            }
+
+            details.setOnClickListener {
+                val intent = Intent(ctx, ProductDetailsActivity::class.java)
+                intent.putExtra("productId", productId)
+                ctx.startActivity(intent)
             }
         }
     }
