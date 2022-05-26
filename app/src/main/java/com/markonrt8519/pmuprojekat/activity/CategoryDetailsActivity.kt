@@ -94,13 +94,13 @@ class CategoryDetailsActivity : AppCompatActivity() {
                         categoryName.setText(category!!.categoryName)
                         val categoryDescription = findViewById<EditText>(R.id.categoryDescription)
                         categoryDescription.setText(category!!.description)
-                        val brisanjeKategorije = findViewById<Button>(R.id.categoryAction2)
-                        brisanjeKategorije.text = "Obrisi"
-                        brisanjeKategorije.isVisible = true
-                        brisanjeKategorije.setOnClickListener { deleteCategory(category!!.categoryId) }
-                        val snimiIzmene = findViewById<Button>(R.id.categoryAction)
-                        snimiIzmene.text = "Snimi"
-                        snimiIzmene.setOnClickListener {
+                        val categoryDeletion = findViewById<Button>(R.id.categoryAction2)
+                        categoryDeletion.text = "Obrisi"
+                        categoryDeletion.isVisible = true
+                        categoryDeletion.setOnClickListener { deleteCategory(category!!.categoryId) }
+                        val saveChanges = findViewById<Button>(R.id.categoryAction)
+                        saveChanges.text = "Snimi"
+                        saveChanges.setOnClickListener {
                             saveCategory(
                                 category!!.categoryId,
                                 categoryName.text.toString(),
