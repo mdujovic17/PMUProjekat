@@ -2,8 +2,8 @@ package com.markonrt8519.pmuprojekat.data.order
 
 import java.util.Date
 
-class Order (
-    val id: Int,
+data class Order (
+    val orderId: Int,
     val customerId: String,
     val employeeId: Int,
     val orderDate: Date,
@@ -18,6 +18,6 @@ class Order (
     val shipCountry: String,
     val customer: Customer,
     val employee: Employee,
-    val shipper: Shipper
+    val shipViaNavigation: Shipper
         ) {
 }
