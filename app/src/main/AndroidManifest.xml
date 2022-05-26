@@ -15,7 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PMUProjekat"
         android:usesCleartextTraffic="true"
-        tools:targetApi="31">
+        tools:targetApi="29">
+        <activity
+            android:name=".activity.ProductsActivity"
+            android:exported="false" />
         <activity
             android:name=".activity.CategoryActivity"
             android:exported="false" />
