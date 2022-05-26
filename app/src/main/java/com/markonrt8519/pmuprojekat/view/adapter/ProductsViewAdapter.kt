@@ -43,9 +43,6 @@ class ProductsViewAdapter(val ctx: Context, val data: LiveData<List<Product>>): 
                 name.setTextColor(Color.BLACK)
                 name.text = model.productName
             }
-
-
-
         }
     }
 }
