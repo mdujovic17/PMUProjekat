@@ -3,12 +3,17 @@ package com.markonrt8519.pmuprojekat.activity
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.beust.klaxon.Klaxon
 import com.markonrt8519.pmuprojekat.R
+import com.markonrt8519.pmuprojekat.api.Routes
 import com.markonrt8519.pmuprojekat.api.handler.NorthwindAPIHandler
 import com.markonrt8519.pmuprojekat.data.product.Category
 import com.markonrt8519.pmuprojekat.view.adapter.CategoryViewAdapter
@@ -25,7 +30,7 @@ class CategoryActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_category)
-        fetchCategories(this, "Categories")
+        fetchCategories(this, Routes.CATEGORIES)
     }
 
     private fun fetchCategories(ctx: Context, sUrl: String): List<Category>? {
@@ -55,5 +60,32 @@ class CategoryActivity : AppCompatActivity() {
             }
         }
         return categories
+    }
+
+    fun showCategoryInput(view: View) {
+        setContentView(R.layout.category_item)
+        val categoryButton = findViewById<Button>(R.id.categoryAction)
+        categoryButton.text = "Dodaj"
+        val categoryName = findViewById<EditText>(R.id.categoryName)
+        val categoryDescription = findViewById<EditText>(R.id.categoryDescription)
+        categoryButton.setOnClickListener {
+            val newCategory = Category(0, categoryName.text.toString(), categoryDescription.text.toString())
+            lifecycleScope.launch(Dispatchers.IO) {
+                try {
+                    val apiHandler = NorthwindAPIHandler()
+                    val result = apiHandler.postRequest(Routes.CATEGORIES, Klaxon().toJsonString(newCategory)
+                    )
+                    if (result != null) {
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(getApplicationContext(), "Usepsno dodavanje kategorije", Toast.LENGTH_LONG).show()
+                        }
+                    } else {
+                        print("Error: Post request returned no response")
+                    }
+                } catch (err: Error) {
+                    print("Error when parsing JSON: " + err.localizedMessage)
+                }
+            }
+        }
     }
 }
