@@ -5,14 +5,13 @@ plugins {
 
 android {
     namespace 'com.markonrt8519.pmuprojekat'
-    compileSdk 28
+    compileSdk 33
 
 
     defaultConfig {
         applicationId "com.markonrt8519.pmuprojekat"
         minSdk 28
-        targetSdk 32
-        compileSdkVersion 28
+        targetSdk 33 // TIRAMISU (A13) SDK VERSION
         versionCode 1
         versionName "1.0"
 
