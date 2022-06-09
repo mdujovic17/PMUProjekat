@@ -13,13 +13,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.markonrt8519.pmuprojekat.R
 import com.markonrt8519.pmuprojekat.data.order.Order
 import com.markonrt8519.pmuprojekat.data.order.OrderDetails
+import com.markonrt8519.pmuprojekat.data.product.Product
 import org.w3c.dom.Text
 
 class OrderViewAdapter(
-    val ctx: Context, val data: LiveData<List<Order>>, val orderDetails: List<OrderDetails>?
+    val ctx: Context, val data: LiveData<List<Order>>, val orderDetails: List<OrderDetails>?, val products: List<Product>
 ): RecyclerView.Adapter<OrderViewAdapter.OrderViewHolder>() {
     private final val TAG: String = "OrderViewAdapter"
-    var products: List<String>? = null
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -50,12 +50,18 @@ class OrderViewAdapter(
     inner class OrderViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         fun bindItems(model: Order) {
             val orderId = model.orderId
-
+            var msg = ""
             var productCount: Int = 0
 
             if (orderDetails != null) {
-                for (product in orderDetails) {
-                    if (product.orderId == model.orderId) {
+                for (order in orderDetails) {
+                    if (order.orderId == model.orderId) {
+                        for (product in products) {
+                            if (product.productId == order.productId) {
+                                msg += product.productName + "\n"
+                                break
+                            }
+                        }
                         productCount += 1
                     }
                 }
@@ -71,25 +77,10 @@ class OrderViewAdapter(
             details.setOnClickListener {
                 val dialog = AlertDialog.Builder(ctx)
                 dialog.setTitle("Porudzbina: $orderId")
-                dialog.setMessage(createMessage())
+                dialog.setMessage(msg)
 
                 dialog.show()
             }
-        }
-
-        fun createMessage(): String {
-            var msg: String = ""
-
-            if (products != null) {
-                for (s in products!!) {
-                    msg += s + "\n"
-                }
-            }
-            else {
-                msg = "No info"
-            }
-
-            return msg
         }
     }
 }

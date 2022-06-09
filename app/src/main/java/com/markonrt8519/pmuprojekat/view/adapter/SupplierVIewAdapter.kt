@@ -35,41 +35,34 @@ class SupplierVIewAdapter(val ctx: Context, val data: LiveData<List<Supplier>>, 
 
     inner class SupplierViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         fun bindItems(model: Supplier) {
-            val supplierId = model.supplierId
-
+            val companyName = model.companyName
+            var msg = ""
             var productCount: Int = 0
 
+            if (products != null) {
+                for (product in products) {
+                    if (product.supplierId == model.supplierId) {
+                        msg += product.productName + "\n"
+                        productCount += 1
+                    }
+                }
+            }
 
+            val name = itemView.findViewById<TextView>(R.id.supplierId)
 
-            val id = itemView.findViewById<TextView>(R.id.supplierId)
             val details = itemView.findViewById<Button>(R.id.supplierDetails)
             val productCountText = itemView.findViewById<TextView>(R.id.numOfProductsSuppliers)
 
-            id.text = supplierId.toString()
+            name.text = companyName
             productCountText.text = productCount.toString()
 
             details.setOnClickListener {
                 val dialog = AlertDialog.Builder(ctx)
-                dialog.setTitle("Dobavljac: $supplierId")
-                dialog.setMessage(createMessage())
+                dialog.setTitle("Dobavljac: $companyName")
+                dialog.setMessage(msg)
 
                 dialog.show()
             }
-        }
-
-        fun createMessage(): String {
-            var msg: String = ""
-
-            if (products != null) {
-                for (s in products) {
-                    //msg += s + "\n"
-                }
-            }
-            else {
-                msg = "No info"
-            }
-
-            return msg
         }
     }
 }

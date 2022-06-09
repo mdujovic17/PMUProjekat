@@ -67,10 +67,6 @@ class SortedViewActivity : AppCompatActivity() {
         val thread = Thread {
             fetchRequiredData()
 
-            while (!ordersLoaded || !orderDetailsLoaded || !productsLoaded || !suppliersLoaded) {
-                ;
-            }
-
             runOnUiThread {
                 progressBar!!.visibility = View.GONE
                 buttons.visibility = View.VISIBLE
@@ -103,7 +99,7 @@ class SortedViewActivity : AppCompatActivity() {
                         orderViewModel.listOrders.value = orders
                         val listProductsView = findViewById<RecyclerView>(R.id.listOrdersView)
                         listProductsView.layoutManager = LinearLayoutManager(ctx)
-                        orderViewAdapter = OrderViewAdapter(ctx, orderViewModel.listOrders, orderDetails)
+                        orderViewAdapter = OrderViewAdapter(ctx, orderViewModel.listOrders, orderDetails, products!!)
 
                         if (products != null) {
                             for (p in products!!) {
@@ -259,7 +255,16 @@ class SortedViewActivity : AppCompatActivity() {
         fetchProducts(this, Routes.PRODUCTS)
         fetchOrderDetails(this, Routes.ORDER_DETAILS)
 
+        //await 'hack'
+        while (!productsLoaded || !orderDetailsLoaded) {
+            ;
+        }
+
         fetchSuppliers(this, Routes.SUPPLIERS)
         fetchOrders(this, Routes.ORDERS)
+
+        while (!ordersLoaded || !suppliersLoaded) {
+            ;
+        }
     }
 }
