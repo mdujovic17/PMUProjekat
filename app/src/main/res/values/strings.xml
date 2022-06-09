@@ -20,6 +20,10 @@
     <string name="yes">Da</string>
     <string name="no">Ne</string>
     <string name="orders">Orders</string>
-    <string name="groupedByOrder">Proizvodi grupisani po porudzbini</string>
-    <string name="groupedBySupplier">Proizvodi grupisani po dobavljacu</string>
+    <string name="groupedProducts">Grupisani proizvodi</string>
+    <string name="title_orders">Porudžbine</string>
+    <string name="title_suppliers">Dostavljači</string>
+    <string name="suppliers_id">ID Dobavljača</string>
+    <string name="orders_id">ID Porudžbine</string>
+    <string name="product_count">Broj proizvoda</string>
 </resources>

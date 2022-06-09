@@ -1,10 +1,9 @@
 package com.markonrt8519.pmuprojekat.api.handler
 
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.RequestBody
+
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.net.URL
 
@@ -20,7 +19,9 @@ class NorthwindAPIHandler {
             val url = URL(BASE_URL + sUrl)
             val request = Request.Builder().url(url).build()
             val response = CLIENT.newCall(request).execute()
-            result = response.body?.string()
+
+            if (response.isSuccessful)
+                result = response.body.string()
         }
         catch (err: Error) {
             print("Error when executing GET request: " + err.localizedMessage)
@@ -40,7 +41,9 @@ class NorthwindAPIHandler {
                 .post(body)
                 .build()   // Execute request
             val response = CLIENT.newCall(request).execute()
-            result = response.body?.string()
+
+            if (response.isSuccessful)
+                result = response.body.string()
         }
         catch(err:Error) {
             print("Error when executing POST request: "+err.localizedMessage)
@@ -59,7 +62,9 @@ class NorthwindAPIHandler {
                 .put(body)
                 .build()   // Execute request
             val response = CLIENT.newCall(request).execute()
-            result = response.body?.string()
+
+            if (response.isSuccessful)
+                result = response.body.string()
         }
         catch(err:Error) {
             print("Error when executing PUT request: "+err.localizedMessage)
@@ -77,7 +82,9 @@ class NorthwindAPIHandler {
                 .delete()
                 .build()   // Execute request
             val response = CLIENT.newCall(request).execute()
-            result = response.body?.string()
+
+            if (response.isSuccessful)
+                result = response.body.string()
         }
         catch(err:Error) {
             print("Error when executing DELETE request: "+err.localizedMessage)

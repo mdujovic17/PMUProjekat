@@ -15,18 +15,17 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/orderId"
+                android:id="@+id/supplierId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:text="TextView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.045"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/numOfProductsOrders"
+                android:id="@+id/numOfProductsSuppliers"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="160dp"
@@ -36,14 +35,14 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
-                android:id="@+id/orderDetails"
+                android:id="@+id/supplierDetails"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:text="@string/details"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/orderId"
+                app:layout_constraintStart_toEndOf="@+id/supplierId"
                 app:layout_constraintTop_toTopOf="parent" />
 
 

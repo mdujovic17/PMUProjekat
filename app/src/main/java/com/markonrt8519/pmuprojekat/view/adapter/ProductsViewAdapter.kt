@@ -41,7 +41,7 @@ class ProductsViewAdapter(val ctx: Context, val data: LiveData<List<Product>>): 
             val name = itemView.findViewById<TextView>(R.id.productName)
             val details = itemView.findViewById<Button>(R.id.productDetails)
 
-            if (model.discontinued) {
+            if (model.discontinued == true) {
                 name.setTextColor(Color.RED)
                 name.text = "DISCONTINUED: ${model.productName}"
             }

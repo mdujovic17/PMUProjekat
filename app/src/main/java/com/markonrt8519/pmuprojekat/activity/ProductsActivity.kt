@@ -33,7 +33,7 @@ class ProductsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_products)
-        fetchProducts(this, "Products")
+        fetchProducts(this, Routes.PRODUCTS)
     }
 
     private fun fetchProducts(ctx: Context, sUrl: String): List<Product>? {
@@ -48,7 +48,7 @@ class ProductsActivity : AppCompatActivity() {
 
                     withContext(Dispatchers.Main) {
                         viewModel.listProducts.value = products
-                        val listProductsView = findViewById<RecyclerView>(R.id.listOrderView)
+                        val listProductsView = findViewById<RecyclerView>(R.id.listProductsView)
                         listProductsView.layoutManager = LinearLayoutManager(ctx)
                         productsViewAdapter = ProductsViewAdapter(ctx, viewModel.listProducts)
                         listProductsView.adapter = productsViewAdapter

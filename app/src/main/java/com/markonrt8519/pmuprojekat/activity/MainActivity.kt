@@ -23,4 +23,9 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, ProductsActivity::class.java)
         startActivity(intent)
     }
+
+    fun openActivityOSGroups(view: View) {
+        val intent = Intent(this, SortedViewActivity::class.java)
+        startActivity(intent)
+    }
 }

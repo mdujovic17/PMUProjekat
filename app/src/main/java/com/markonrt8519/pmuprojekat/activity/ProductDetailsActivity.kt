@@ -75,11 +75,11 @@ class ProductDetailsActivity : AppCompatActivity() {
         dialog.setTitle("Obrisi proizvod")
         dialog.setMessage("Da li ste sigurni da zelite da obrisete ovaj proizvod? Ova radnja se ne moze opozvati!")
 
-        dialog.setNegativeButton(R.string.no) {dialog, which ->
+        dialog.setNegativeButton(R.string.no) { _, _ ->
             Toast.makeText(applicationContext, "Brisanje otkazano", Toast.LENGTH_LONG).show()
         }
 
-        dialog.setPositiveButton(R.string.yes) { dialog, which ->
+        dialog.setPositiveButton(R.string.yes) { _, _ ->
             lifecycleScope.launch(Dispatchers.IO) {
                 try {
                     val apiHandler = NorthwindAPIHandler()
@@ -164,29 +164,35 @@ class ProductDetailsActivity : AppCompatActivity() {
                         }
 
                         val discontinued = findViewById<Switch>(R.id.discontinuedSwitch)
-                        discontinued.isChecked = product!!.discontinued
+                        discontinued.isChecked = product!!.discontinued == true
 
                         val productDeletion = findViewById<Button>(R.id.categoryAction2)
                         val saveChanges = findViewById<Button>(R.id.categoryAction)
 
                         productDeletion.text = "Obrisi"
                         productDeletion.isVisible = true
-                        productDeletion.setOnClickListener { deleteProduct(product!!.productId) }
+                        productDeletion.setOnClickListener { product!!.productId?.let { it1 ->
+                            deleteProduct(
+                                it1
+                            )
+                        } }
 
                         saveChanges.text = "Snimi"
                         saveChanges.setOnClickListener {
-                            saveProduct(
-                                product!!.productId,
-                                productName.text.toString(),
-                                supplierTextView.text.toString().split(" ")[0].toInt(),
-                                categoryTextView.text.toString().split(" ")[0].toInt(),
-                                quantityPerUnit.text.toString(),
-                                unitPrice.text.toString().toDouble(),
-                                unitsInStock.text.toString().toInt(),
-                                unitsOnOrder.text.toString().toInt(),
-                                reorderLevel.text.toString().toInt(),
-                                discontinued.isActivated
-                            )
+                            product!!.productId?.let { it1 ->
+                                saveProduct(
+                                    it1,
+                                    productName.text.toString(),
+                                    supplierTextView.text.toString().split(" ")[0].toInt(),
+                                    categoryTextView.text.toString().split(" ")[0].toInt(),
+                                    quantityPerUnit.text.toString(),
+                                    unitPrice.text.toString().toDouble(),
+                                    unitsInStock.text.toString().toInt(),
+                                    unitsOnOrder.text.toString().toInt(),
+                                    reorderLevel.text.toString().toInt(),
+                                    discontinued.isActivated
+                                )
+                            }
                         }
                     }
                 }
