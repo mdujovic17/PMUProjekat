@@ -10,7 +10,7 @@ import java.net.URL
 class NorthwindAPIHandler {
 
     val CLIENT = OkHttpClient()
-    val BASE_URL = "http://94.156.189.137/api/"
+    val BASE_URL = "http://94.156.189.137/api/" //TODO: Allow user input here
     val MEDIA_TYPE = "application/json; charset=utf-8".toMediaTypeOrNull()
 
     fun getRequest(sUrl: String): String? {

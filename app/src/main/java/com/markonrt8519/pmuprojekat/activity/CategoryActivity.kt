@@ -1,12 +1,12 @@
 package com.markonrt8519.pmuprojekat.activity
 
+import android.annotation.SuppressLint
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
+import android.widget.*
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,14 +23,46 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class CategoryActivity : AppCompatActivity() {
+    private val TAG = "SortedView"
+
+    private var progressBar: ProgressBar? = null
+
+    private var categoriesLoaded = false
 
     val viewModel: CategoryViewModel by viewModels()
     var categoryViewAdapter:CategoryViewAdapter? = null
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_category)
-        fetchCategories(this, Routes.CATEGORIES)
+
+        progressBar = findViewById<ProgressBar>(R.id.progressBar2)
+        val button = findViewById<Button>(R.id.button2)
+        val textView = findViewById<TextView>(R.id.textViewCategories)
+        val listCategoryView = findViewById<RecyclerView>(R.id.listCategoryView)
+
+        progressBar!!.visibility = View.VISIBLE
+        button.visibility = View.INVISIBLE
+        textView.visibility = View.INVISIBLE
+        listCategoryView.visibility = View.INVISIBLE
+
+        val thread = Thread {
+
+            fetchCategories(this, Routes.CATEGORIES)
+
+            while (!categoriesLoaded);
+
+            runOnUiThread {
+                progressBar!!.visibility = View.GONE
+                button.visibility = View.VISIBLE
+                textView.visibility = View.VISIBLE
+                listCategoryView.visibility = View.VISIBLE
+            }
+
+        }
+        thread.start()
     }
 
     private fun fetchCategories(ctx: Context, sUrl: String): List<Category>? {
@@ -42,7 +74,8 @@ class CategoryActivity : AppCompatActivity() {
                 try {
                     //Parse result string JSON into data class
                     categories = Klaxon().parseArray(result)
-
+                    categoriesLoaded = true
+                    Log.i(TAG, "Parsing of objects of type 'Category' was successful.")
                     withContext(Dispatchers.Main) {
                         viewModel.listCategory.value = categories
                         val listCategoryView = findViewById<RecyclerView>(R.id.listCategoryView)
@@ -52,11 +85,11 @@ class CategoryActivity : AppCompatActivity() {
                     }
                 }
                 catch (err: Error) {
-                    print("Error when parsing JSON: " + err.localizedMessage)
+                    Log.e(TAG, "Error when parsing JSON: " + err.localizedMessage)
                 }
             }
             else {
-                print("Error: Get request returned no response")
+                Log.e(TAG, "Error: Get request returned no response")
             }
         }
         return categories
@@ -80,10 +113,10 @@ class CategoryActivity : AppCompatActivity() {
                             Toast.makeText(getApplicationContext(), "Usepsno dodavanje kategorije", Toast.LENGTH_LONG).show()
                         }
                     } else {
-                        print("Error: Post request returned no response")
+                        Log.e(TAG, "Error: Post request returned no response")
                     }
                 } catch (err: Error) {
-                    print("Error when parsing JSON: " + err.localizedMessage)
+                    Log.e(TAG, "Error when parsing JSON: " + err.localizedMessage)
                 }
             }
         }

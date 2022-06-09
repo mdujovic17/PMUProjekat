@@ -1,8 +1,10 @@
 package com.markonrt8519.pmuprojekat.activity
 
+import android.annotation.SuppressLint
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.activity.viewModels
@@ -23,17 +25,47 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class ProductsActivity : AppCompatActivity() {
-
+    private val TAG = "ProductsActivity"
     val viewModel: ProductsViewModel by viewModels()
     var productsViewAdapter: ProductsViewAdapter? = null
+
+    private var progressBar: ProgressBar? = null
+
+    private var productsLoaded = false
 
     private val supplierPopupView by lazy { ListPopupWindow(this) }
     private val categoryPopupView by lazy { ListPopupWindow(this) }
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_products)
-        fetchProducts(this, Routes.PRODUCTS)
+
+        progressBar = findViewById<ProgressBar>(R.id.progressBar3)
+        val button = findViewById<Button>(R.id.button4)
+        val textView = findViewById<TextView>(R.id.textViewProducts)
+        val listProductsView = findViewById<RecyclerView>(R.id.listProductsView)
+
+        progressBar!!.visibility = View.VISIBLE
+        button.visibility = View.INVISIBLE
+        textView.visibility = View.INVISIBLE
+        listProductsView.visibility = View.INVISIBLE
+
+        val thread = Thread {
+
+            fetchProducts(this, Routes.PRODUCTS)
+
+            while (!productsLoaded);
+
+            runOnUiThread {
+                progressBar!!.visibility = View.GONE
+                button.visibility = View.VISIBLE
+                textView.visibility = View.VISIBLE
+                listProductsView.visibility = View.VISIBLE
+            }
+
+        }
+        thread.start()
     }
 
     private fun fetchProducts(ctx: Context, sUrl: String): List<Product>? {
@@ -46,6 +78,9 @@ class ProductsActivity : AppCompatActivity() {
                     //Parse result string JSON into data class
                     products = Klaxon().parseArray(result)
 
+                    productsLoaded = true
+
+                    Log.i(TAG, "Parsing of objects of type 'Product' was successful.")
                     withContext(Dispatchers.Main) {
                         viewModel.listProducts.value = products
                         val listProductsView = findViewById<RecyclerView>(R.id.listProductsView)
@@ -55,11 +90,11 @@ class ProductsActivity : AppCompatActivity() {
                     }
                 }
                 catch (err: Error) {
-                    print("Error when parsing JSON: " + err.localizedMessage)
+                    Log.e(TAG, "Error when parsing JSON: " + err.localizedMessage)
                 }
             }
             else {
-                print("Error: Get request returned no response")
+                Log.e(TAG, "Error: Get request returned no response")
             }
         }
         return products
@@ -99,7 +134,6 @@ class ProductsActivity : AppCompatActivity() {
             categoryTextView.text = categoriesString[position]
             categoryPopupView.dismiss()
         }
-        //populateSpinners()
 
         val productButton = findViewById<Button>(R.id.categoryAction)
         productButton.text = "Dodaj"
@@ -109,9 +143,6 @@ class ProductsActivity : AppCompatActivity() {
         val unitsInStock = findViewById<EditText>(R.id.unitsInStockTextView)
         val unitsOnOrder = findViewById<EditText>(R.id.unitsOnOrderTextView)
         val reorderLevel = findViewById<EditText>(R.id.reorderLevelTextView)
-
-//        val categoryId = findViewById<Spinner>(R.id.categoriesSpinner)
-//        val supplierId = findViewById<Spinner>(R.id.suppliersSpinner)
 
         val discontinued = findViewById<Switch>(R.id.discontinuedSwitch)
 
@@ -127,41 +158,16 @@ class ProductsActivity : AppCompatActivity() {
                         withContext(Dispatchers.Main) {
                             Toast.makeText(getApplicationContext(), "Usepsno dodavanje novog proizvoda", Toast.LENGTH_LONG).show()
                         }
+                        Log.i(TAG, "Parsing object of type 'Product' to JSON was successful.")
                     } else {
-                        print("Error: POST request returned no response")
+                        Log.e(TAG, "Error: POST request returned no response")
                     }
                 } catch (err: Error) {
-                    print("Error when parsing JSON: " + err.localizedMessage)
+                    Log.e(TAG, "Error when parsing JSON: " + err.localizedMessage)
                 }
             }
         }
     }
-//    @SuppressLint("ResourceType")
-//    fun populateSpinners() {
-//        val categoryId: Spinner = findViewById<Spinner>(R.id.categoriesSpinner)
-//        val supplierId = findViewById<Spinner>(R.id.suppliersSpinner)
-//
-//        val apiHandler = NorthwindAPIHandler()
-//
-//        val categoriesString: MutableList<String> = fetchCategories(Routes.CATEGORIES, apiHandler)
-//        val suppliersString: MutableList<String> = fetchSuppliers(Routes.SUPPLIERS, apiHandler)
-//
-//
-//        val categoryArrayAdapter = ArrayAdapter(this, androidx.constraintlayout.widget.R.layout.support_simple_spinner_dropdown_item, categoriesString)
-//        val supplierArrayAdapter = ArrayAdapter(this, androidx.constraintlayout.widget.R.layout.support_simple_spinner_dropdown_item, suppliersString)
-//
-//        categoryId.adapter = categoryArrayAdapter
-//        supplierId.adapter = supplierArrayAdapter
-//
-//        categoryArrayAdapter.setDropDownViewResource(androidx.constraintlayout.widget.R.layout.support_simple_spinner_dropdown_item)
-//        supplierArrayAdapter.setDropDownViewResource(androidx.constraintlayout.widget.R.layout.support_simple_spinner_dropdown_item)
-//
-//        categoryId.onItemSelectedListener = this
-//        supplierId.onItemSelectedListener = this
-//
-//        categoryArrayAdapter.notifyDataSetChanged()
-//        supplierArrayAdapter.notifyDataSetChanged()
-//    }
 
     private fun fetchSuppliers(sUrl: String, apiHandler: NorthwindAPIHandler): MutableList<String> {
         var suppliers: List<Supplier>?
@@ -171,17 +177,17 @@ class ProductsActivity : AppCompatActivity() {
             if (result != null) {
                 try {
                     suppliers = Klaxon().parseArray(result)
-
+                    Log.i(TAG, "Parsing of objects of type 'Supplier' was successful.")
                     for (s in suppliers!!) {
                         supplierString.add("" + s.supplierId + " " + s.companyName)
                     }
                 }
                 catch (err: Error) {
-                    print("Error when parsing JSON: " + err.localizedMessage)
+                    Log.e(TAG, "Error when parsing JSON: " + err.localizedMessage)
                 }
             }
             else {
-                print("Errpr: GET request returned no response")
+                Log.e(TAG, "Errpr: GET request returned no response")
             }
         }
 
@@ -197,17 +203,17 @@ class ProductsActivity : AppCompatActivity() {
             if (result != null) {
                 try {
                     categories = Klaxon().parseArray(result)
-
+                    Log.i(TAG, "Parsing of objects of type 'Category' was successful.")
                     for (c in categories!!) {
                         categoriesString.add("" + c.categoryId + " " + c.categoryName)
                     }
                 }
                 catch (err: Error) {
-                    print("Error when parsing JSON: " + err.localizedMessage)
+                    Log.e(TAG, "Error when parsing JSON: " + err.localizedMessage)
                 }
             }
             else {
-                print("Errpr: GET request returned no response")
+                Log.e(TAG, "Errpr: GET request returned no response")
             }
         }
         return categoriesString
