@@ -9,6 +9,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import java.net.URL
 
 class NorthwindAPIHandler {
+
     val CLIENT = OkHttpClient()
     val BASE_URL = "http://94.156.189.137/api/"
     val MEDIA_TYPE = "application/json; charset=utf-8".toMediaTypeOrNull()
